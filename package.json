@@ -1,0 +1,59 @@
+{
+  "name": "qode-vscode-extension",
+  "displayName": "Qode: AI Gist Integrator",
+  "description": "Seamlessly integrate GitHub Gists into your project using Mobile Sync and AI context.",
+  "version": "1.0.0",
+  "publisher": "MaySalguedo",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "qode.connectApp",
+        "title": "Qode: Connect Mobile App (Generate QR)",
+        "category": "Qode"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run bundle",
+    "bundle": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "check-types": "tsc --noEmit",
+    "watch": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --watch",
+    "package": "npm run compile -- --minify"
+  },
+  "keywords": [
+    "gist",
+    "firebase",
+    "ai",
+    "mobile-sync"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "firebase": "^12.10.0",
+    "firebase-admin": "^13.7.0",
+    "inversify": "^7.11.0",
+    "qrcode": "^1.5.4",
+    "reflect-metadata": "^0.2.2",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "@types/qrcode": "^1.5.6",
+    "@types/reflect-metadata": "^0.0.5",
+    "@types/uuid": "^10.0.0",
+    "@types/vscode": "^1.80.0",
+    "esbuild": "^0.27.3",
+    "typescript": "^5.9.3"
+  }
+}
