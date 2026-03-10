@@ -5,7 +5,12 @@ export const TYPES = {
     Firebase: Symbol.for("Firebase"),
     AIService: Symbol.for("AIService"),
     UIProvider: Symbol.for("UIProvider"),
+    VSCodeScannerProvider: Symbol.for("VSCodeScannerProvider"),
+    AIProposalProvider: Symbol.for("AIProposalProvider"),
 	FirebaseService: Symbol.for("FirebaseService"),
-	SessionService: Symbol.for("SessionService")
+	SessionService: Symbol.for("SessionService"),
+	GithubService: Symbol.for("GithubService"),
+	GeminiService: Symbol.for("GeminiService"),
+	VSCodeLoggerService: Symbol.for("VSCodeLoggerService")
 
 };

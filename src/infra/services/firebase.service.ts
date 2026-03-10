@@ -30,6 +30,7 @@ export class FirebaseService {
 		await setDoc(doc(this.db, "sessions", sessionId), {
 			id: sessionId,
 			status: 'WAITING',
+			gistIds: [],
 			createdAt: Timestamp.now(),
 			updatedAt: Timestamp.now()
 		});

@@ -4,6 +4,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
 ![InversifyJS](https://img.shields.io/badge/InversifyJS-FFCE00?style=for-the-badge&logo=node.js&logoColor=black)
+![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)
 
 ## 🎯 Overview
 
@@ -75,7 +76,7 @@ npm install
 
 ```bash
 
-npm bundle
+npm run bundle
 
 ```
 
@@ -114,4 +115,6 @@ FIREBASE_PROJECT_ID=YOUR_FIREBASE_PROJECT_ID
 FIREBASE_STORAGE_BUCKET=YOUR_FIREBASE_STORAGE_BUCKET
 FIREBASE_MESSAGING_SENDER_ID=YOUR_FIREBASE_MESSAGING_SENDER_ID
 FIREBASE_APP_ID=YOUR_FIREBASE_APP_ID
+GEMINI_API_KEY=YOUR_GEMINI_APY_KEY
+GEMINI_TEXT_MODE_AI=YOUR_GEMINI_TEXT_MODEL_AI
 ```

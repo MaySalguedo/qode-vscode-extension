@@ -1,10 +1,10 @@
-import { Timestamp } from "firebase/firestore";
+import { Timestamp } from '@angular/fire/firestore';
 
 export interface QodeSession {
 
 	id: string,
 	status: 'WAITING' | 'GIST_RECEIVED' | 'ANALYZING' | 'DONE',
-	gistContent?: string,
+	gistIds: string[],
 	projectContext?: string,
 	createdAt: Timestamp,
 	updatedAt: Timestamp

@@ -19,6 +19,4 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
 	context.subscriptions.push(disposable);
 
-	// Ejemplo: Crear una sesión al iniciar
-	// await firebase.createNewSession("uuid-generado-qr");
 }

@@ -7,7 +7,8 @@
 			"@IoC/*": ["src/IoC/*"],
 			"@infra/*": ["src/infra/*"],
 			"@core/*": ["src/core/*"],
-			"@entities/*": ["src/core/entities/*"]
+			"@entities/*": ["src/core/entities/*"],
+			"@models/*": ["src/core/models/*"]
 
 		},
         "module": "NodeNext",
