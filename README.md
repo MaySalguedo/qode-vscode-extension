@@ -115,6 +115,23 @@ FIREBASE_PROJECT_ID=YOUR_FIREBASE_PROJECT_ID
 FIREBASE_STORAGE_BUCKET=YOUR_FIREBASE_STORAGE_BUCKET
 FIREBASE_MESSAGING_SENDER_ID=YOUR_FIREBASE_MESSAGING_SENDER_ID
 FIREBASE_APP_ID=YOUR_FIREBASE_APP_ID
+
+# Gemini credential
 GEMINI_API_KEY=YOUR_GEMINI_APY_KEY
 GEMINI_TEXT_MODE_AI=YOUR_GEMINI_TEXT_MODEL_AI
 ```
+
+## 📱 App Screenshots
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><b>Qode VSCode Extension</b></td>
+    </tr>
+    <tr>
+      <td>
+        <img src="src/assets/screenshots/qode_visual.jpeg" alt="Qode Visual Studio" width="300"/>
+      </td>
+    </tr>
+  </table>
+</div>
