@@ -11,8 +11,8 @@ export class SessionService {
         let sessionId = context.workspaceState.get<string>(this.STORAGE_KEY);
 
         if (!sessionId) {
-            sessionId = uuidv4();
 
+            sessionId = uuidv4();
             await context.workspaceState.update(this.STORAGE_KEY, sessionId);
 
         }

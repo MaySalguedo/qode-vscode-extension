@@ -1,12 +1,9 @@
-import { Timestamp } from '@angular/fire/firestore';
+import { FirestoreEntity } from '@models/firestore-entity.model';
 
-export interface QodeSession {
+export interface QodeSession extends FirestoreEntity {
 
-	id: string,
 	status: 'WAITING' | 'GIST_RECEIVED' | 'ANALYZING' | 'DONE',
-	gistIds: string[],
-	projectContext?: string,
-	createdAt: Timestamp,
-	updatedAt: Timestamp
+	gistIds: string[], // Gists' ids
+	practicesIds: string[],
 
 }

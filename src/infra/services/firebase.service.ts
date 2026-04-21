@@ -1,12 +1,13 @@
 import { injectable } from "inversify";
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, onSnapshot, updateDoc, Firestore } from "firebase/firestore";
+import { getFirestore, doc, setDoc, onSnapshot, updateDoc, Firestore, getDoc } from "firebase/firestore";
 import { QodeSession } from "@entities/qode-session.entity";
+import { BestPractice } from '@entities/best-practice.entity';
 import { Timestamp } from "firebase/firestore";
 
 @injectable()
 export class FirebaseService {
-	private db?: Firestore;
+	private firestore?: Firestore;
 
 	public async initialization(): Promise<void> {
 		const firebaseConfig = {
@@ -21,30 +22,48 @@ export class FirebaseService {
 		};
 
 		const app = initializeApp(firebaseConfig);
-		this.db = getFirestore(app);
+		this.firestore = getFirestore(app);
 
 	}
 
 	public async createNewSession(sessionId: string): Promise<void> {
-		if (!this.db) throw new Error("Firebase no inicializado");
-		await setDoc(doc(this.db, "sessions", sessionId), {
+		if (!this.firestore) throw new Error("Firebase no inicializado");
+		await setDoc(doc(this.firestore, "sessions", sessionId), {
 			id: sessionId,
 			status: 'WAITING',
 			gistIds: [],
+			practicesIds: [],
 			createdAt: Timestamp.now(),
 			updatedAt: Timestamp.now()
 		});
 	}
 
 	public subscribeToSession(sessionId: string, onUpdate: (data: QodeSession) => void): void {
-		if (!this.db) return;
-		onSnapshot(doc(this.db, "sessions", sessionId), (snapshot) => {
+		if (!this.firestore) return;
+		onSnapshot(doc(this.firestore, "sessions", sessionId), (snapshot) => {
 			if (snapshot.exists()) onUpdate(snapshot.data() as QodeSession);
 		});
 	}
 
 	public async updateSessionData(sessionId: string, data: Partial<QodeSession>): Promise<void> {
-		if (!this.db) return;
-		await updateDoc(doc(this.db, "sessions", sessionId), data);
+		if (!this.firestore) return;
+		await updateDoc(doc(this.firestore, "sessions", sessionId), data);
 	}
+
+	public async getBestPracticesByIds(ids: string[]): Promise<Array<BestPractice>> {
+
+		if (!this.firestore) return [];
+
+		if (ids.length === 0) return [];
+
+		const snapshots = await Promise.all(
+			ids.map(id => getDoc(doc(this.firestore!, 'best-practices', id)))
+		);
+
+		return snapshots
+			.filter(snap => snap.exists())
+			.map(snap => ({ id: snap.id, ...snap.data() } as BestPractice));
+
+	}
+
 }

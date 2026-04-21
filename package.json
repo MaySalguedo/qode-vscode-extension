@@ -16,7 +16,7 @@
     "commands": [
       {
         "command": "qode.connectApp",
-        "title": "Qode: Connect Mobile App (Generate QR)",
+        "title": "Connect Mobile App (Generate QR)",
         "category": "Qode"
       }
     ]
