@@ -6,7 +6,7 @@ import { FirebaseService } from '@infra/services/firebase.service';
 import { GithubService } from '@infra/services/github.service';
 import { GeminiService } from '@infra/services/gemini.service';
 import { GetPracticesSkill } from '../skills/get-practices.skill';
-import { VSCodeScannerProvider } from '@infra/providers/vs-code-scanner.provider';
+import { ContextSelectorProvider } from '@infra/providers/context-selector.provider';
 import { AIProposalProvider } from '@infra/providers/ai-proposal.provider';
 import { VSCodeLoggerService } from '@infra/services/vs-code-logger.service';
 
@@ -18,31 +18,39 @@ export class IntegrationUseCase {
 		@inject(TYPES.GithubService) private readonly githubService: GithubService,
 		@inject(TYPES.GeminiService) private readonly geminiService: GeminiService,
 		@inject(TYPES.GetPracticesSkill) private readonly practicesSkill: GetPracticesSkill,
-		@inject(TYPES.VSCodeScannerProvider) private readonly scannerProvider: VSCodeScannerProvider,
+		@inject(TYPES.ContextSelectorProvider) private readonly contextSelector: ContextSelectorProvider,
 		@inject(TYPES.AIProposalProvider) private readonly aiProposal: AIProposalProvider,
 		@inject(TYPES.VSCodeLoggerService) private readonly logger: VSCodeLoggerService
 	) {}
 
 	public async execute(session: QodeSession): Promise<void> {
 
+		this.logger.info('Opening context file selector for the user.');
+
+		const localFiles = await this.contextSelector.selectFiles();
+
+		if (!localFiles) {
+			this.logger.info('User cancelled the context selector. Integration aborted.');
+			return;
+		}
+
+		this.logger.info(`User selected ${localFiles.length} file(s) as context.`);
+
 		await vscode.window.withProgress({
-			location: vscode.ProgressLocation.Notification,
-			title: 'Qode Integrator',
+			location:    vscode.ProgressLocation.Notification,
+			title:       'Qode Integrator',
 			cancellable: false
 		}, async (progress) => {
 
 			try {
 
-				this.logger.info('Starting parallel gist download and workspace scanning.');
-				progress.report({ increment: 20, message: `Downloading gists for session ${session.id} and scanning workspace...` });
+				this.logger.info('Starting gist download in parallel with context already provided.');
+				progress.report({ increment: 20, message: `Downloading gists for session ${session.id}…` });
 
-				const [gists, localFiles] = await Promise.all([
-					this.githubService.getGists(session.gistIds),
-					this.scannerProvider.scanWorkspace()
-				]);
+				const gists = await this.githubService.getGists(session.gistIds);
 
-				this.logger.info(`Download completed. ${localFiles.filter(Boolean).length} local files read.`);
-				progress.report({ increment: 30, message: 'Analyzing with Gemini (agentic mode)...' });
+				this.logger.info(`Download completed. Sending ${localFiles.length} local file(s) to Gemini.`);
+				progress.report({ increment: 30, message: 'Analyzing with Gemini (agentic mode)…' });
 
 				await this.firebaseService.updateSessionData(session.id, { status: 'ANALYZING' });
 
@@ -66,7 +74,7 @@ export class IntegrationUseCase {
 					}
 				);
 
-				progress.report({ increment: 50, message: 'Analysis complete — awaiting your review...' });
+				progress.report({ increment: 50, message: 'Analysis complete — awaiting your review…' });
 				this.logger.info('AI response received. Showing proposal to user.');
 
 				await this.aiProposal.showProposal(aiResponse, async (rawMarkdown) => {
@@ -88,7 +96,7 @@ export class IntegrationUseCase {
 
 	private async applyIntegration(markdownContext: string): Promise<void> {
 
-		this.logger.info('Starting file writing process...');
+		this.logger.info('Starting file writing process…');
 
 		const jsonMatch = markdownContext.match(/```json\n([\s\S]*?)\n```/);
 

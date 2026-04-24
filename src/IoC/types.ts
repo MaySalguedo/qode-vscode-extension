@@ -10,6 +10,7 @@ export const TYPES = {
 	UIProvider: Symbol.for('UIProvider'),
 	AIProposalProvider: Symbol.for('AIProposalProvider'),
 	VSCodeScannerProvider: Symbol.for('VSCodeScannerProvider'),
+	ContextSelectorProvider: Symbol.for('ContextSelectorProvider'),
 
 	GetPracticesSkill: Symbol.for('GetPracticesSkill'),
 

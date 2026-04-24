@@ -11,6 +11,7 @@ import { VSCodeLoggerService } from '@infra/services/vs-code-logger.service';
 import { QRProvider } from '@infra/providers/qr.provider';
 import { AIProposalProvider } from '@infra/providers/ai-proposal.provider';
 import { VSCodeScannerProvider } from '@infra/providers/vs-code-scanner.provider';
+import { ContextSelectorProvider } from '@infra/providers/context-selector.provider';
 
 import { GetPracticesSkill } from '@core/skills/get-practices.skill';
 
@@ -27,6 +28,7 @@ container.bind<VSCodeLoggerService>(TYPES.VSCodeLoggerService).to(VSCodeLoggerSe
 container.bind<QRProvider>(TYPES.UIProvider).to(QRProvider).inSingletonScope();
 container.bind<AIProposalProvider>(TYPES.AIProposalProvider).to(AIProposalProvider).inSingletonScope();
 container.bind<VSCodeScannerProvider>(TYPES.VSCodeScannerProvider).to(VSCodeScannerProvider).inSingletonScope();
+container.bind<ContextSelectorProvider>(TYPES.ContextSelectorProvider).to(ContextSelectorProvider).inSingletonScope();
 
 container.bind<GetPracticesSkill>(TYPES.GetPracticesSkill).to(GetPracticesSkill).inSingletonScope();
 

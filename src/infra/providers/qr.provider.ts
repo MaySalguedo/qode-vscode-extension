@@ -20,6 +20,7 @@ export class QRProvider {
 
 	public async showQRPanel(context: vscode.ExtensionContext): Promise<void> {
 
+		await this.sessionService.clearSession(context);
 		const sessionId = await this.sessionService.getOrCreateSessionId(context);
 
 		const panel = vscode.window.createWebviewPanel(
