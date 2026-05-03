@@ -1,10 +1,16 @@
-# Qode: VS Code AI & Gist Integrator 🚀
+<div align="center">
+
+# Qode VS Code Extension 🚀
 
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-007ACC?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
 ![InversifyJS](https://img.shields.io/badge/InversifyJS-FFCE00?style=for-the-badge&logo=node.js&logoColor=black)
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=google&logoColor=white)
+
+<img src="src/assets/img/qode_banner.png" alt="Qode">
+
+</div>
 
 ## 🎯 Overview
 
@@ -126,11 +132,19 @@ GEMINI_TEXT_MODEL_AI=YOUR_GEMINI_TEXT_MODEL_AI
 <div align="center">
   <table>
     <tr>
-      <td align="center"><b>Qode VSCode Extension</b></td>
+      <td align="center"><b>QR Panel</b></td>
+      <td align="center"><b>Project Context</b></td>
+      <td align="center"><b>Integration Panel</b></td>
     </tr>
     <tr>
       <td>
-        <img src="src/assets/screenshots/qode_visual.jpeg" alt="Qode Visual Studio" width="300"/>
+        <img src="src/assets/screenshots/qode_qr_pannel.png" alt="Qode QR Panel" width="300"/>
+      </td>
+	  <td>
+        <img src="src/assets/screenshots/qode_context_panel.png" alt="Qode Context Panel" width="300"/>
+      </td>
+	  <td>
+        <img src="src/assets/screenshots/qode_integration_panel.png" alt="Qode Integration Panel" width="300"/>
       </td>
     </tr>
   </table>
