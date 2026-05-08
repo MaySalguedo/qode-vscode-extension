@@ -70,7 +70,14 @@ export class GeminiService {
 			"content": "// complete source code here"
 		  }
 		]
-		Paths must be relative to the project root.`.trim();
+		Paths must be relative to the project root.
+
+		YOUR RESPONSE MAY CONTAIN MULTIPLE JSON BLOCKS.
+		- You can use JSON blocks to present structured data (dependencies, steps, configuration) anywhere in the explanation.
+		- The VERY LAST JSON block in your response MUST be the exact file modifications array, as before.
+		- All other JSON blocks (if any) are for illustration only and will NOT be applied.
+
+		... (rest of CRITICAL RULES remain the same)`.trim();
 
 		const model = this.ai.getGenerativeModel({
 

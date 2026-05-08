@@ -43,7 +43,7 @@ export class QRProvider {
 				await this.integrationUseCase.execute({ ...data, id: sessionId });
 			}
 
-			if (data?.status === 'DONE') {
+			if (data?.status === 'DONE' || data?.status === 'FAILED' || data?.status === 'REJECTED') {
 				await this.sessionService.clearSession(context);
 			}
 

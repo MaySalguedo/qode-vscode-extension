@@ -55,7 +55,9 @@ import { ProjectFile } from "@models/project-file.model";
 
 		});
 
-		return await Promise.all(filePromises);
+		const results = await Promise.all(filePromises);
+
+		return results.filter((file) => file !== null);
 
 	}
 

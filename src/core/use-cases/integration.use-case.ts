@@ -37,8 +37,8 @@ export class IntegrationUseCase {
 		this.logger.info(`User selected ${localFiles.length} file(s) as context.`);
 
 		await vscode.window.withProgress({
-			location:    vscode.ProgressLocation.Notification,
-			title:       'Qode Integrator',
+			location: vscode.ProgressLocation.Notification,
+			title: 'Qode Integrator',
 			cancellable: false
 		}, async (progress) => {
 
@@ -80,10 +80,14 @@ export class IntegrationUseCase {
 				await this.aiProposal.showProposal(aiResponse, async (rawMarkdown) => {
 					await this.applyIntegration(rawMarkdown);
 					await this.firebaseService.updateSessionData(session.id, { status: 'DONE' });
+				}, async () => {
+					vscode.window.showInformationMessage('Integration rejected. No changes were made.');
+					await this.firebaseService.updateSessionData(session.id, { status: 'REJECTED' });
 				});
 
 			} catch (error) {
 
+				await this.firebaseService.updateSessionData(session.id, { status: 'FAILED' });
 				const err = error instanceof Error ? error : new Error(String(error));
 				this.logger.error(`Integration process failed: ${err.message}\n${err.stack}`);
 				vscode.window.showErrorMessage('Qode: An error occurred. Check the Output panel for details.');
@@ -98,13 +102,19 @@ export class IntegrationUseCase {
 
 		this.logger.info('Starting file writing process…');
 
-		const jsonMatch = markdownContext.match(/```json\n([\s\S]*?)\n```/);
+		const lastBlock = this.extractLastJsonBlock(markdownContext);
 
-		if (!jsonMatch?.[1]) {
+		if (!lastBlock) {
 			throw new Error('No structured JSON block found in the AI response.');
 		}
 
-		const filesToModify: { path: string; content: string }[] = JSON.parse(jsonMatch[1]);
+		let filesToModify: { path: string; content: string }[];
+		try {
+			filesToModify = JSON.parse(lastBlock);
+		} catch (parseError) {
+			this.logger.error(`Failed to parse integration JSON. Content: ${lastBlock.substring(0, 200)}`);
+			throw new Error('The integration JSON is malformed. Check the AI response.');
+		}
 		const workspaceRoot = vscode.workspace.workspaceFolders![0].uri;
 
 		await Promise.all(
@@ -119,6 +129,27 @@ export class IntegrationUseCase {
 			`Qode: Integration successful! Modified ${filesToModify.length} file(s).`
 		);
 
+	}
+
+	private extractLastJsonBlock(markdown: string): string | null {
+		const opening = '```json';
+		const closing = '```';
+
+		const startIndex = markdown.lastIndexOf(opening);
+		if (startIndex === -1) return null;
+
+		// Move past the opening delimiter and any newline/spaces
+		let contentStart = startIndex + opening.length;
+		while (contentStart < markdown.length && /[\s]/.test(markdown[contentStart])) {
+			contentStart++;
+		}
+
+		// The closing backticks are the LAST triple backticks in the whole message
+		const endIndex = markdown.lastIndexOf(closing);
+		if (endIndex === -1 || endIndex <= contentStart) return null;
+
+		const jsonContent = markdown.substring(contentStart, endIndex).trim();
+		return jsonContent || null;
 	}
 
 }
